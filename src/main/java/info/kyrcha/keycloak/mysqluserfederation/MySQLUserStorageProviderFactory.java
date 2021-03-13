@@ -82,8 +82,8 @@ public class MySQLUserStorageProviderFactory implements UserStorageProviderFacto
     }
 
     @Override
-    public MySQLUserStorageProvider create(KeycloakSession session, ComponentModel config) {
-        String uri = config.getConfig().getFirst("mysql");
+    public MySQLUserStorageProvider create(KeycloakSession session, ComponentModel model) {
+        String uri = model.getConfig().getFirst("mysql");
 
         Connection conn = null;
         try {
@@ -96,7 +96,7 @@ public class MySQLUserStorageProviderFactory implements UserStorageProviderFacto
             throw new ComponentValidationException(ex.getMessage());
         }
 
-        return new MySQLUserStorageProvider(session, config, conn);
+        return new MySQLUserStorageProvider(session, model, conn);
     }
 
 }
