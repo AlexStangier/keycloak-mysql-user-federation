@@ -36,17 +36,17 @@ public class MySQLUserStorageProviderFactory implements UserStorageProviderFacto
 
     protected static final List<ProviderConfigProperty> configMetadata;
 
-    public static final String PROVIDER_NAME = "mysql-users";
+    public static final String PROVIDER_NAME = "eat4speed-user-federation";
 
     static {
         configMetadata = ProviderConfigurationBuilder.create().property().name("mysql")
                 .type(ProviderConfigProperty.STRING_TYPE).label("MySQL URI")
                 .defaultValue("jdbc:mysql://localhost/db?user=root").helpText("MySQL URI").add().property()
-                .name("table").type(ProviderConfigProperty.STRING_TYPE).label("Users Table").defaultValue("users")
+                .name("table").type(ProviderConfigProperty.STRING_TYPE).label("Users Table").defaultValue("Benutzer")
                 .helpText("Table where users are stored").add().property().name("usernamecol")
-                .type(ProviderConfigProperty.STRING_TYPE).label("Username Column").defaultValue("username")
+                .type(ProviderConfigProperty.STRING_TYPE).label("Username Column").defaultValue("Benutzername")
                 .helpText("Column name that holds the usernames").add().property().name("passwordcol")
-                .type(ProviderConfigProperty.STRING_TYPE).label("Password Column").defaultValue("password")
+                .type(ProviderConfigProperty.STRING_TYPE).label("Password Column").defaultValue("Passwort")
                 .helpText("Column name that holds the passwords").add().property().name("hash")
                 .type(ProviderConfigProperty.LIST_TYPE).label("Hash Algorithm").defaultValue("SHA1")
                 .options(Arrays.asList("SHA1", "MD5")).helpText("Algorithm used for hashing").add().build();
@@ -68,7 +68,7 @@ public class MySQLUserStorageProviderFactory implements UserStorageProviderFacto
         String uri = config.getConfig().getFirst("mysql");
         if (uri == null)
             throw new ComponentValidationException("MySQL connection URI not present");
-        Connection conn = null;
+        Connection conn;
         try {
             conn = DriverManager.getConnection(uri);
             conn.isValid(1000);
@@ -85,7 +85,7 @@ public class MySQLUserStorageProviderFactory implements UserStorageProviderFacto
     public MySQLUserStorageProvider create(KeycloakSession session, ComponentModel model) {
         String uri = model.getConfig().getFirst("mysql");
 
-        Connection conn = null;
+        Connection conn;
         try {
             conn = DriverManager.getConnection(uri);
         } catch (SQLException ex) {
