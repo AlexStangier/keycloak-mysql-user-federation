@@ -20,6 +20,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -29,17 +31,17 @@ import org.keycloak.credential.CredentialInput;
 import org.keycloak.credential.CredentialInputUpdater;
 import org.keycloak.credential.CredentialInputValidator;
 import org.keycloak.credential.CredentialModel;
-import org.keycloak.models.KeycloakSession;
-import org.keycloak.models.RealmModel;
-import org.keycloak.models.UserModel;
+import org.keycloak.models.*;
 import org.keycloak.storage.ReadOnlyException;
 import org.keycloak.storage.StorageId;
 import org.keycloak.storage.UserStorageProvider;
 import org.keycloak.storage.adapter.AbstractUserAdapter;
+import org.keycloak.storage.federated.UserFederatedStorageProvider;
 import org.keycloak.storage.user.UserLookupProvider;
+import org.keycloak.storage.user.UserQueryProvider;
 
 public class MySQLUserStorageProvider
-        implements UserStorageProvider, UserLookupProvider, CredentialInputValidator, CredentialInputUpdater {
+        implements UserStorageProvider, UserLookupProvider, CredentialInputValidator, CredentialInputUpdater, UserQueryProvider {
 
     protected KeycloakSession session;
     protected Connection conn;
@@ -266,4 +268,288 @@ public class MySQLUserStorageProvider
         }
     }
 
+    /**
+     * Returns the number of users, without consider any service account.
+     *
+     * @param realm the realm
+     * @return the number of users
+     */
+    @Override
+    public int getUsersCount(RealmModel realm) {
+        return 0;
+    }
+
+    /**
+     * Returns the number of users that are in at least one of the groups
+     * given.
+     *
+     * @param realm    the realm
+     * @param groupIds set of groups id to check for
+     * @return the number of users that are in at least one of the groups
+     */
+    @Override
+    public int getUsersCount(RealmModel realm, Set<String> groupIds) {
+        return 0;
+    }
+
+    /**
+     * Returns the number of users that match the given criteria.
+     *
+     * @param search search criteria
+     * @param realm  the realm
+     * @return number of users that match the search
+     */
+    @Override
+    public int getUsersCount(String search, RealmModel realm) {
+        return 0;
+    }
+
+    /**
+     * Returns the number of users that match the given criteria and are in
+     * at least one of the groups given.
+     *
+     * @param search   search criteria
+     * @param realm    the realm
+     * @param groupIds set of groups to check for
+     * @return number of users that match the search and given groups
+     */
+    @Override
+    public int getUsersCount(String search, RealmModel realm, Set<String> groupIds) {
+        return 0;
+    }
+
+    /**
+     * Returns the number of users that match the given filter parameters.
+     *
+     * @param params filter parameters
+     * @param realm  the realm
+     * @return number of users that match the given filters
+     */
+    @Override
+    public int getUsersCount(Map<String, String> params, RealmModel realm) {
+        return 0;
+    }
+
+    /**
+     * Returns the number of users that match the given filter parameters and is in
+     * at least one of the given groups.
+     *
+     * @param params   filter parameters
+     * @param realm    the realm
+     * @param groupIds set if groups to check for
+     * @return number of users that match the given filters and groups
+     */
+    @Override
+    public int getUsersCount(Map<String, String> params, RealmModel realm, Set<String> groupIds) {
+        return 0;
+    }
+
+    /**
+     * Returns the number of users.
+     *
+     * @param realm                 the realm
+     * @param includeServiceAccount if true, the number of users will also include service accounts. Otherwise, only the number of users.
+     * @return the number of users
+     */
+    @Override
+    public int getUsersCount(RealmModel realm, boolean includeServiceAccount) {
+        return 0;
+    }
+
+    @Override
+    public List<UserModel> getUsers(RealmModel realm) {
+        return null;
+    }
+
+    @Override
+    public List<UserModel> getUsers(RealmModel realm, int firstResult, int maxResults) {
+        return null;
+    }
+
+    /**
+     * Search for users with username, email or first + last name that is like search string.
+     * <p>
+     * If possible, implementations should treat the parameter values as partial match patterns i.e. in RDMBS terms use LIKE.
+     * <p>
+     * This method is used by the admin console search box
+     *
+     * @param search
+     * @param realm
+     * @return
+     */
+    @Override
+    public List<UserModel> searchForUser(String search, RealmModel realm) {
+
+
+
+
+
+        return null;
+    }
+
+    /**
+     * Search for users with username, email or first + last name that is like search string.
+     * <p>
+     * If possible, implementations should treat the parameter values as partial match patterns i.e. in RDMBS terms use LIKE.
+     * <p>
+     * This method is used by the admin console search box
+     *
+     * @param search
+     * @param realm
+     * @param firstResult
+     * @param maxResults
+     * @return
+     */
+    @Override
+    public List<UserModel> searchForUser(String search, RealmModel realm, int firstResult, int maxResults) {
+        return null;
+    }
+
+    /**
+     * Search for user by parameter.  Valid parameters are:
+     * "first" - first name
+     * "last" - last name
+     * "email" - email
+     * "username" - username
+     * <p>
+     * If possible, implementations should treat the parameter values as partial match patterns i.e. in RDMBS terms use LIKE.
+     * <p>
+     * This method is used by the REST API when querying users.
+     *
+     * @param params
+     * @param realm
+     * @return
+     */
+    @Override
+    public List<UserModel> searchForUser(Map<String, String> params, RealmModel realm) {
+        return null;
+    }
+
+    /**
+     * Search for user by parameter.    Valid parameters are:
+     * "first" - first name
+     * "last" - last name
+     * "email" - email
+     * "username" - username
+     * <p>
+     * If possible, implementations should treat the parameter values as patterns i.e. in RDMBS terms use LIKE.
+     * This method is used by the REST API when querying users.
+     *
+     * @param params
+     * @param realm
+     * @param firstResult
+     * @param maxResults
+     * @return
+     */
+    @Override
+    public List<UserModel> searchForUser(Map<String, String> params, RealmModel realm, int firstResult, int maxResults) {
+        return null;
+    }
+
+    /**
+     * Get users that belong to a specific group.  Implementations do not have to search in UserFederatedStorageProvider
+     * as this is done automatically.
+     *
+     * @param realm
+     * @param group
+     * @param firstResult
+     * @param maxResults
+     * @return
+     * @see UserFederatedStorageProvider
+     */
+    @Override
+    public List<UserModel> getGroupMembers(RealmModel realm, GroupModel group, int firstResult, int maxResults) {
+        return null;
+    }
+
+    /**
+     * Get users that belong to a specific role.
+     *
+     * @param realm
+     * @param role
+     * @return
+     */
+    @Override
+    public List<UserModel> getRoleMembers(RealmModel realm, RoleModel role) {
+        return null;
+    }
+
+    /**
+     * Search for users that have a specific role with a specific roleId.
+     *
+     * @param realm
+     * @param role
+     * @param firstResult
+     * @param maxResults
+     * @return
+     */
+    @Override
+    public List<UserModel> getRoleMembers(RealmModel realm, RoleModel role, int firstResult, int maxResults) {
+        return null;
+    }
+
+    /**
+     * Get users that belong to a specific group.  Implementations do not have to search in UserFederatedStorageProvider
+     * as this is done automatically.
+     *
+     * @param realm
+     * @param group
+     * @return
+     * @see UserFederatedStorageProvider
+     */
+    @Override
+    public List<UserModel> getGroupMembers(RealmModel realm, GroupModel group) {
+        return null;
+    }
+
+    /**
+     * Search for users that have a specific attribute with a specific value.
+     * Implementations do not have to search in UserFederatedStorageProvider
+     * as this is done automatically.
+     *
+     * @param attrName
+     * @param attrValue
+     * @param realm
+     * @return
+     * @see UserFederatedStorageProvider
+     */
+    @Override
+    public List<UserModel> searchForUserByUserAttribute(String attrName, String attrValue, RealmModel realm) {
+        return null;
+    }
+
+    /**
+     * Callback when a realm is removed.  Implement this if, for example, you want to do some
+     * cleanup in your user storage when a realm is removed
+     *
+     * @param realm
+     */
+    @Override
+    public void preRemove(RealmModel realm) {
+
+    }
+
+    /**
+     * Callback when a group is removed.  Allows you to do things like remove a user
+     * group mapping in your external store if appropriate
+     *
+     * @param realm
+     * @param group
+     */
+    @Override
+    public void preRemove(RealmModel realm, GroupModel group) {
+
+    }
+
+    /**
+     * Callback when a role is removed.  Allows you to do things like remove a user
+     * role mapping in your external store if appropriate
+     *
+     * @param realm
+     * @param role
+     */
+    @Override
+    public void preRemove(RealmModel realm, RoleModel role) {
+
+    }
 }
